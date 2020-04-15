@@ -31,12 +31,12 @@ export default class CountryDetailsScreen extends Component {
             })
           })
         } else {
-          Alert("Something goes wrong. try again")
+          Alert.alert('Something went wrong! try again');
         }
       })
       .catch((error) => {
         this.setState({ showLoading: false });
-
+        Alert.alert('Something went wrong! try again');
         console.error(error);
       });
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-  StyleSheet
+  StyleSheet, Alert
 } from "react-native";
 import { Container, Text, Content, Item, Input, Button, Icon, Spinner, Toast } from 'native-base';
 const country_info_BASE_URL = "https://restcountries.eu/rest/v2/name/";
@@ -35,10 +35,12 @@ export default class HomeScreen extends Component {
         if (countryList.length > 0) {
           this.setState({ country_name: "" })
           this.props.navigation.navigate("Details", { countryList: countryList });
+        }else{
+          Alert.alert('Something went wrong! try again');
         }
-
       })
       .catch((error) => {
+        Alert.alert('Something went wrong! try again');
         this.setState({ showLoading: false });
         console.error(error);
       });
