@@ -14,6 +14,9 @@ function MainStackNavigator() {
       <Stack.Navigator
         initialRouteName='HomeScreen'
         screenOptions={{
+          animationEnabled: false,
+        }}
+        screenOptions={{
           gestureEnabled: true,
           headerStyle: {
             backgroundColor: '#101010'

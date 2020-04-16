@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-  StyleSheet, Alert
+  StyleSheet, Alert, Keyboard
 } from "react-native";
 import { Container, Text, Content, Item, Input, Button, Icon, Spinner, Toast } from 'native-base';
 const country_info_BASE_URL = "https://restcountries.eu/rest/v2/name/";
@@ -19,7 +19,7 @@ export default class HomeScreen extends Component {
   };
 
   getCountryDetails = () => {
-
+    Keyboard.dismiss();
     this.setState({ showLoading: true });
     let full_URL = country_info_BASE_URL + this.state.country_name;
     console.log("full_URL->" + full_URL)
@@ -31,16 +31,37 @@ export default class HomeScreen extends Component {
         let countryList = responseJson;
         this.setState({ showLoading: false });
         console.log("countryList->" + JSON.stringify(countryList));
-
+     
         if (countryList.length > 0) {
           this.setState({ country_name: "" })
-          this.props.navigation.navigate("Details", { countryList: countryList });
+          Toast.show({
+            text: 'Success! Country details.',
+            buttonText: 'Okay',
+            onClose:(reason)=>{
+              this.props.navigation.navigate("Details", { countryList: countryList });
+            },
+            type: "success"
+          })
         }else{
-          Alert.alert('Something went wrong! try again');
+          // Alert.alert('Something went wrong! try again');
+          this.setState({ country_name: "" })
+          Toast.show({
+            text: 'Failed! Country name is not found',
+            buttonText: 'Okay',
+            duration:3000,
+            type: "danger"
+          })
         }
       })
       .catch((error) => {
-        Alert.alert('Something went wrong! try again');
+        // Alert.alert('Something went wrong! try again');
+        this.setState({ country_name: "" })
+        Toast.show({
+          text: 'Failed! Try again',
+          buttonText: 'Okay',
+          duration:3000,
+          type: "danger"
+        })
         this.setState({ showLoading: false });
         console.error(error);
       });

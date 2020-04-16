@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { StyleSheet, Alert } from 'react-native'
-import Image from 'react-native-remote-svg';
-import { Container, Content, Text, Item, Card, CardItem, Button, Icon, Thumbnail, Body, Spinner } from 'native-base';
+// import Image from 'react-native-remote-svg';
+import { SvgUri, Image } from 'react-native-svg';
+import { Container, Content, Text, Item, Card, CardItem, Button, Icon, Thumbnail, Body, Spinner, Toast } from 'native-base';
 
 export default class CountryDetailsScreen extends Component {
   state = {
@@ -21,7 +22,14 @@ export default class CountryDetailsScreen extends Component {
     })
       .then((response) => response.json())
       .then((responseJson) => {
+        console.log("Weather Response->" + JSON.stringify(responseJson))
         this.setState({ showLoading: false });
+        Toast.show({
+          text: 'Success! Weather details.',
+          buttonText: 'Okay',
+          duration: 3000,
+          type: "success"
+        })
         if (responseJson.current) {
           this.setState({
             weatherInfo: responseJson.current
@@ -31,12 +39,24 @@ export default class CountryDetailsScreen extends Component {
             })
           })
         } else {
-          Alert.alert('Something went wrong! try again');
+          Toast.show({
+            text: 'Failed! Try again',
+            buttonText: 'Okay',
+            duration: 3000,
+            type: "danger"
+          })
+          // Alert.alert('Something went wrong! try again');
         }
       })
       .catch((error) => {
         this.setState({ showLoading: false });
-        Alert.alert('Something went wrong! try again');
+        Toast.show({
+          text: 'Failed! Try again',
+          buttonText: 'Okay',
+          duration: 3000,
+          type: "danger"
+        })
+        // Alert.alert('Something went wrong! try again');
         console.error(error);
       });
 
@@ -67,11 +87,18 @@ export default class CountryDetailsScreen extends Component {
                 <Text>
                   Capital: {capital}
                 </Text>
+                <Item style={{ width: 310, height: 160 }}>
+                  <SvgUri
+                    width="300"
+                    height="150"
+                    uri={flag}
+                  />
+                </Item>
 
-                <Image padder
+                {/* <Image padder
                   source={{ uri: flag }}
-                  style={{ width: 200, height: 80 }}
-                />
+                  style={{ width: 200,}}
+                /> */}
                 <Text>
                   Flag source: {flag}
                 </Text>
